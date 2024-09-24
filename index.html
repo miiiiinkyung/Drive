@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Drive</title>
+	<style type="text/css">
+		body { margin: 0; text-align: center; }
+		
+		/* 전체 컨테이너 */
+		#container { display: flex; width: 100vw; height: 100vh; overflow: hidden; position: relative; }
+
+		/* 배경 애니메이션 */
+		.shiftani { 
+			width: 100vw; height: 100vh; 
+			background-size: cover;
+			background-repeat;
+			position: absolute; 
+			top: 0; left: 0;
+			z-index: 0;
+			animation: shift 3s infinite linear;
+		}
+
+
+		/* 차 이미지 */
+		.car {
+			width: 100vw; height: 100vh; 
+			background: url(car.png) no-repeat center;
+			background-size: cover;
+			position: absolute;
+			z-index: 1; /* 가장 앞에 배치 */
+		}
+
+		/* 버튼 및 슬라이더 위치 */
+		.controls {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			z-index: 2;
+		}
+
+		/* 버튼 및 슬라이더 스타일 */
+		.controls button{
+			display: block;
+			margin-bottom: 10px;
+			padding: 10px 20px;
+		}
+
+		/* 배경 전환 애니메이션 */
+		@keyframes shift {
+			from { background-position: 0 0; }
+			to { background-position: 100vw 0; }
+		}
+	</style>
+</head>
+<body>
+	<!-- 차 이미지 -->
+	<div class="car"></div>
+
+	<!-- 버튼, 슬라이더 및 오디오 -->
+    <div class="controls">
+        <button id="seaBut">Go Sea</button>
+        <audio id="seaSnd" src="sea.mp3"></audio>
+        
+        <button id="cityBut">Go City</button>
+        <audio id="citySnd" src="city.mp3"></audio>
+
+
+        <button id="forestBut">Go Forest</button>
+        <audio id="forestSnd" src="forest.mp3"></audio>
+
+
+        <!-- 애니메이션 속도 조절 슬라이더 -->
+        
+        <label for="speedControl">Speed</label>
+        <input type="range" id="speedControl" step="0.1" min="1" max="10" value="5">
+    </div>
+    </div>
+
+	<!-- 배경 이미지 -->
+	<div id="left" class="shiftani" style="background-image: url('sea.png');"></div>
+
+	<script type="text/javascript">
+		// 바다 버튼 클릭 시 배경과 소리 변경
+		document.getElementById("seaBut").onclick = function() {
+			document.getElementById("left").style.backgroundImage = "url('sea.png')";
+			document.getElementById("citySnd").pause(); // 도시 소리 중지
+			document.getElementById("forestSnd").pause(); // 숲 소리 중지
+			document.getElementById("seaSnd").currentTime = 0; // 바다 소리 처음부터
+			document.getElementById("seaSnd").play();
+		};
+
+		// 도시 버튼 클릭 시 배경과 소리 변경
+		document.getElementById("cityBut").onclick = function() {
+			document.getElementById("left").style.backgroundImage = "url('city.jpg')";
+			document.getElementById("seaSnd").pause(); // 바다 소리 중지
+			document.getElementById("forestSnd").pause(); // 숲 소리 중지
+			document.getElementById("citySnd").currentTime = 0; // 도시 소리 처음부터
+			document.getElementById("citySnd").play();
+		};
+
+		// 숲 버튼 클릭 시 배경과 소리 변경
+		document.getElementById("forestBut").onclick = function() {
+			document.getElementById("left").style.backgroundImage = "url('forest.png')";
+			document.getElementById("seaSnd").pause(); // 바다 소리 중지
+			document.getElementById("citySnd").pause(); // 도시 소리 중지
+			document.getElementById("forestSnd").currentTime = 0; // 숲 소리 처음부터
+			document.getElementById("forestSnd").play();
+		};
+		// 애니메이션 속도 조절
+		document.getElementById("speedControl").oninput = function() {
+			var speed = document.getElementById("speedControl").value;
+			document.getElementById("left").style.animationDuration = speed + "s";
+		};
+	</script>
+</body>
+</html>
